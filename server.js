@@ -18,7 +18,7 @@ mongoose.connect(dbURL, function(err){
 var Celebrity = require('./models/Celebrity.js')
 var Meme = require('./models/Meme.js')
 
-// Root Route 
+// Root Route
 app.get('/', function(req, res){
   res.send("<h1> Welcome To Celebrity Memes! </h1>")
 })
@@ -27,7 +27,7 @@ app.get('/', function(req, res){
 app.get('/celebrity', function(req, res){
   Celebrity.find({}, function(err, celeb){
     if(err) throw err
-    resp.json({success: true, message: celeb})
+    res.json({success: true, message: celeb})
   })
 })
 
@@ -42,7 +42,7 @@ app.post('/celebrity', function(req, res){
   Celebrity.create(req.body, function(err, celeb){
     if(err) throw err
     res.json({success: true, message: celeb + " was created"})
-    
+
   })
 })
 
@@ -65,6 +65,6 @@ app.patch('/celebrity/:id', function(req, res){
 
 // Start Server ::::::::::::::::::
 app.listen(3000, function(err){
- if(err) throw err 
+ if(err) throw err
  console.log("Listening on port 3000...Bitches!")
 })
