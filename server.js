@@ -35,7 +35,14 @@ app.get('/celebrity/:id', function(req, res){
   Celebrity.findOne({_id: req.params.id})
     .populate("memes")
     .exec(function(err, celeb){
-      res.json(celeb)
+      var longString = ''
+      celeb.memes.forEach(function(el, i, arr) {
+        if (celeb.memes.length > 0) {
+          longString += '<img src="' + el.url + '">'
+
+        }
+      })
+      res.send(longString)
     })
 })
 
