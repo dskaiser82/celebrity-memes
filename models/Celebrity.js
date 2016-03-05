@@ -9,3 +9,7 @@ var celebritySchema = new mongoose.Schema({
 var Celebrity = mongoose.model("Celebrity", celebritySchema)
 
 module.exports = Celebrity
+
+
+
+// http://www.vitamin-ha.com/wp-content/uploads/2015/08/Kanye-West-Memes190.jpg

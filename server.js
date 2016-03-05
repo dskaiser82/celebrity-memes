@@ -25,17 +25,18 @@ app.get('/', function(req, res){
 
 // Celebrity Routes
 app.get('/celebrity', function(req, res){
-  Celebrity.find({}, function(err, celeb){
+  Celebrity.find({}, function(err, celebs){
     if(err) throw err
-    res.json({success: true, message: celeb})
+    res.json({success: true, message: celebs})
   })
 })
 
 app.get('/celebrity/:id', function(req, res){
-  Celebrity.findOne({_id: req.params.id}, function(err, celeb){
-    if(err) throw err
-    res.json({success:true, message: celeb})
-  })
+  Celebrity.findOne({_id: req.params.id})
+    .populate("memes")
+    .exec(function(err, celeb){
+      res.json(celeb)
+    })
 })
 
 app.post('/celebrity', function(req, res){
@@ -54,14 +55,34 @@ app.delete('/celebrity/:id', function(req, res){
 })
 
 app.patch('/celebrity/:id', function(req, res){
-  Celebrity.findOneAndUpdate({_id: req.params.id}, function(err, celeb){
+  Celebrity.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, function(err, celeb){
     if(err) throw err
-    res.json({success:true, message: req.params.id + " was changed to " + newCeleb})
+    res.json({success:true, message: celeb})
   })
 })
 
 // Meme Routes
+app.post('/celebrity/:id', function(req, res){
+  Celebrity.findOne({_id: req.params.id}, function(err, celeb){
+    if(err) throw err
+    console.log(celeb, celeb.memes, celeb.memes.count)
+    //create and save meme
+    var meme = new Meme(req.body)
+    meme.save()
+    //push meme to celebs meme array
+    celeb.memes.push(meme)
+    celeb.save(function(err, newCeleb){
+      if(err) throw err
+      res.json(newCeleb)
+    })
+  })
+})
 
+
+
+// app.get('/celebrity/:id/memes', function(req,res){
+//   Meme.find({_by: req.params.id}, function(err, meme))
+// })
 
 // Start Server ::::::::::::::::::
 app.listen(3000, function(err){
