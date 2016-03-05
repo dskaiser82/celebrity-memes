@@ -27,8 +27,8 @@ app.get('/', function(req, res){
 app.get('/celebrity', function(req, res){
   Celebrity.find({}, function(err, celebs){
     if(err) throw err
-    var longString = "<h1> Celebrities </h1><br>"
-    celebs.each(function(celeb){
+    var longString = "<h1> Celebrities </h1><br><br>"
+    celebs.forEach(function(celeb){
      longSring += "<a href=celebrity/" + celeb._id + ">" + celeb.name + "</a><br><br><hr>"
     })
     res.send(longString)
